@@ -1,16 +1,15 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputLabel,
-} from "@mui/material";
+import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
+import { useAuth } from "../contexts/useAuth";
 
 const LoginPage = () => {
+  const { login } = useAuth();
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    login(
+      (e.currentTarget.elements.namedItem("email") as HTMLInputElement).value,
+      (e.currentTarget.elements.namedItem("password") as HTMLInputElement).value
+    );
   };
   return (
     <Box

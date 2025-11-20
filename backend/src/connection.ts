@@ -1,0 +1,25 @@
+import { DataSource } from "typeorm";
+import { User } from "./entities/User";
+
+export const AppDataSource = new DataSource({
+  type: "postgres", // Change to your DB type (mysql, sqlite, etc.)
+  host: "localhost",
+  port: 5433,
+  username: "postgres",
+  password: "postgres",
+  database: "postgres",
+  schema: "shop",
+  synchronize: false, // Set to false in production
+  logging: false,
+  entities: [User],
+});
+
+export async function connectDB() {
+  try {
+    await AppDataSource.initialize();
+    console.log("Database connected");
+  } catch (error) {
+    console.error("Database connection error:", error);
+    throw error;
+  }
+}

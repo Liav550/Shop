@@ -5,4 +5,8 @@ type Product = {
   price?: number;
 };
 
-export type { Product };
+type User = {
+  name: string;
+};
+
+export type { Product, User };
