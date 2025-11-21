@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { AppDataSource } from "../connection";
 import { User } from "../entities/User";
 import { compare } from "bcrypt";
@@ -12,19 +12,18 @@ export class LoginService {
     const user = await usersRepository.findOne({ where: { email } });
 
     if (!user) {
-      return { success: false, message: "User not found" };
+      throw new UnauthorizedException("Invalid credentials");
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const isPasswordValid: boolean = await compare(password, user.password);
 
     if (!isPasswordValid) {
-      return { success: false, message: "Invalid password" };
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     // @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const token = sign({ id: user.id, email: user.email }, process.env.SECRET);
 
-    return { success: true, message: "Login successful", token };
+    return { token };
   }
 }

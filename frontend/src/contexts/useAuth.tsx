@@ -39,7 +39,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const { mutateAsync: loginRequest, isPending } = usePostRequest<
     {
       token: string;
-      user: User;
     },
     { email: string; password: string }
   >("/login");

@@ -1,19 +1,22 @@
 import { Box } from "@mui/material";
 import { colorPalette } from "./utils/consts";
 import LoginPage from "./views/LoginPage";
-import { AuthProvider } from "./contexts/useAuth";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProductList from "./views/ProductList";
+import UserRoute from "./routes/UserRoute";
 
-const queryClient = new QueryClient();
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Box bgcolor={colorPalette.darkBege}>
-          <LoginPage />
-        </Box>
-      </AuthProvider>
-    </QueryClientProvider>
+    <Box bgcolor={colorPalette.darkBege}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route element={<UserRoute />}>
+            <Route path="/products" element={<ProductList />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Box>
   );
 }
 

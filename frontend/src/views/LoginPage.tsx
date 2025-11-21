@@ -1,15 +1,25 @@
 import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
 import { useAuth } from "../contexts/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(
-      (e.currentTarget.elements.namedItem("email") as HTMLInputElement).value,
-      (e.currentTarget.elements.namedItem("password") as HTMLInputElement).value
-    );
+    try {
+      await login(
+        (e.currentTarget.elements.namedItem("email") as HTMLInputElement).value,
+        (e.currentTarget.elements.namedItem("password") as HTMLInputElement)
+          .value
+      );
+
+      navigate("/products"); // This will be the home page in the future
+    } catch (err) {
+      // could show an error toast here
+      console.error("Login failed", err);
+    }
   };
   return (
     <Box
