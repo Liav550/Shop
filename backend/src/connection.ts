@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { User } from "./entities/User";
+import { Product } from "./entities/Product";
 
 export const AppDataSource = new DataSource({
   type: "postgres", // Change to your DB type (mysql, sqlite, etc.)
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
   schema: "shop",
   synchronize: false, // Set to false in production
   logging: false,
-  entities: [User],
+  entities: [User, Product],
 });
 
 export async function connectDB() {
