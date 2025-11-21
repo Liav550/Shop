@@ -10,15 +10,21 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  rememberMe: boolean;
+  setRemember: (value: boolean) => void;
+  setToken: (token: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   token: null,
+  setToken: () => {},
   isAuthenticated: false,
   isLoading: false,
   login: async () => {},
   logout: () => {},
+  rememberMe: false,
+  setRemember: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -27,6 +33,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("jwt")
   );
+
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
   // Get user data when token exists
   const { data: userData, isLoading } = useGetRequest<{ user: User }>(
@@ -49,8 +57,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setToken(res.token);
   };
 
+  const changeToken = (newToken: string | null) => {
+    setToken(newToken);
+    if (newToken) {
+      localStorage.setItem("jwt", newToken);
+    }
+  };
+
+  const setRemember = (value: boolean) => {
+    setRememberMe(value);
+    localStorage.setItem("rememberMe", value ? "true" : "false");
+  };
+
   const logout = () => {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("rememberMe");
     setToken(null);
   };
 
@@ -65,6 +86,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         isLoading: isLoading || isPending,
         login,
         logout,
+        rememberMe,
+        setRemember,
+        setToken: changeToken,
       }}
     >
       {children}

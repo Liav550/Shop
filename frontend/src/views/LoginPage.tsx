@@ -1,10 +1,23 @@
-import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  Input,
+  InputLabel,
+} from "@mui/material";
 import { useAuth } from "../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
+import { colorPalette } from "../utils/consts";
+import { GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, token, setToken, rememberMe, setRemember } = useAuth();
   const navigate = useNavigate();
+
+  if (token && localStorage.getItem("rememberMe") === "true") {
+    navigate("/products");
+  }
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,8 +54,7 @@ const LoginPage = () => {
           justifyContent: "center",
           textAlign: "center",
           gap: "1rem",
-          width: "20rem",
-          height: "15rem",
+          width: "25rem",
         }}
       >
         <h2>Log In</h2>
@@ -58,9 +70,40 @@ const LoginPage = () => {
           </InputLabel>
           <Input id="password" type="password" />
         </FormControl>
-        <Button sx={{ border: "1px solid black" }} type="submit">
-          Submit
-        </Button>
+        <Box display="flex" flexDirection="row">
+          <Box flexGrow={1}>
+            <Checkbox
+              id="rememberMe"
+              onClick={() => setRemember(!rememberMe)}
+              value={rememberMe}
+            />
+            <label htmlFor="rememberMe">Remember me</label>
+          </Box>
+          <Box
+            flexGrow={1}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            Don't have an account? &nbsp; <a href="/signup">Sign Up</a>
+          </Box>
+        </Box>
+        <Box display={"flex"} flexDirection={"row"} gap={"1rem"}>
+          <Button
+            sx={{ flexGrow: 1, backgroundColor: colorPalette.bege }}
+            type="submit"
+          >
+            Submit
+          </Button>
+
+          <GoogleLogin
+            auto_select={true}
+            onSuccess={(credentials) => {
+              setToken(credentials.credential!);
+              navigate("/products");
+            }}
+          ></GoogleLogin>
+        </Box>
       </Box>
     </Box>
   );
