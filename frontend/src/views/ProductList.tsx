@@ -1,14 +1,15 @@
 import { Box } from "@mui/material";
 import ProductCard from "../components/ProductCard";
-import type { Product } from "../utils/types";
-import { useGetRequest } from "../hooks/useGetRequest";
+import type { Product, CartItem } from "../utils/types";
+import type { FC } from "react";
 
-const ProductList = () => {
-  const productList: Product[] =
-    useGetRequest<Product[]>("/products").data || [];
+interface ProductListProps {
+  list: Product[] | CartItem[];
+}
 
+const ProductList: FC<ProductListProps> = ({ list }) => {
   return (
-    <>
+    <Box>
       <Box
         sx={{
           display: "grid",
@@ -21,11 +22,16 @@ const ProductList = () => {
           },
         }}
       >
-        {productList.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {list.map((item) => (
+          <ProductCard
+            key={"amount" in item ? item.product.id : item.id}
+            product={"amount" in item ? item.product : item}
+            showQuantity={"amount" in item}
+            showCartButton={"amount" in item === false}
+          />
         ))}
       </Box>
-    </>
+    </Box>
   );
 };
 

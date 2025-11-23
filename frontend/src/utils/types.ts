@@ -11,4 +11,14 @@ type User = {
   email: string;
 };
 
-export type { Product, User };
+type CartItem = {
+  amount: number;
+  product: Product;
+};
+
+type Cart = {
+  id: number;
+  orderItems: CartItem[];
+};
+
+export type { Product, User, CartItem, Cart };

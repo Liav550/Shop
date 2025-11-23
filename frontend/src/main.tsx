@@ -2,6 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { AuthProvider } from "./contexts/useAuth.tsx";
+import { colorPalette } from "./utils/consts";
+
+// apply page background using JS so we don't rely on a separate CSS file
+document.body.style.margin = "0";
+document.body.style.backgroundColor = colorPalette.bege;
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
