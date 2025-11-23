@@ -7,7 +7,7 @@ import UserRoute from "./routes/UserRoute";
 
 function App() {
   return (
-    <Box bgcolor={colorPalette.darkBege}>
+    <Box bgcolor={colorPalette.bege}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />

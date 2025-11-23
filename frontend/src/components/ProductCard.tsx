@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import type { FC } from "react";
 import type { Product } from "../utils/types";
 import { colorPalette } from "../utils/consts";
@@ -19,7 +19,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         padding: 1,
         gap: 1,
         flexDirection: "column",
-        backgroundColor: colorPalette.bege,
+        backgroundColor: colorPalette.darkBege,
       }}
     >
       {product.image && (
@@ -36,8 +36,24 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         </Box>
       </Box>
       {product.price && (
-        <Box fontWeight="800" marginBottom={"auto"}>
-          {product.price}$
+        <Box fontWeight="800" marginBottom={"auto"} display={"flex"}>
+          <Box
+            flexGrow={1}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            {product.price}$
+          </Box>
+          <Button
+            sx={{
+              flexGrow: 1,
+              backgroundColor: colorPalette.brown,
+              color: "black",
+            }}
+          >
+            Add To Cart
+          </Button>
         </Box>
       )}
     </Box>
