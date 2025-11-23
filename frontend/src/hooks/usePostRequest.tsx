@@ -15,15 +15,21 @@ export const usePostRequest = <TData, TVariables>(
     onError?: (error: unknown) => void;
     config?: AxiosRequestConfig;
     withAuth?: boolean; // include JWT if true
+    contentType?: string;
   }
 ) => {
   const token = localStorage.getItem("jwt");
 
   const mutation = useMutation<TData, unknown, TVariables>({
     mutationFn: async (variables: TVariables) => {
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      };
+      // If variables is a FormData instance, let the browser set the Content-Type header
+      const isFormData =
+        typeof FormData !== "undefined" && variables instanceof FormData;
+
+      const headers: Record<string, string> = {};
+      if (!isFormData) {
+        headers["Content-Type"] = options?.contentType || "application/json";
+      }
 
       if (options?.withAuth && token) {
         headers["Authorization"] = `Bearer ${token}`;

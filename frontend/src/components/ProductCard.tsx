@@ -26,10 +26,15 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         <img
           src={product.image}
           alt={product.name}
-          style={{ maxWidth: "100%", maxHeight: "70%" }}
+          style={{ maxWidth: "100%", maxHeight: "60%", flexGrow: 1 }}
         />
       )}
-      <Box flexGrow={1}>{product.name}</Box>
+      <Box flexGrow={1} display={"flex"} flexDirection={"column"} gap={"1rem"}>
+        <Box>{product.name}</Box>
+        <Box>
+          <small>{product.description}</small>
+        </Box>
+      </Box>
       {product.price && (
         <Box fontWeight="800" marginBottom={"auto"}>
           {product.price}$

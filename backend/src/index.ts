@@ -1,9 +1,8 @@
+import { config } from "dotenv";
+config();
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { connectDB } from "./connection";
-import { config } from "dotenv";
-
-config();
 async function bootstrap() {
   try {
     await connectDB();
