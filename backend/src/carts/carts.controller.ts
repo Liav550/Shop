@@ -14,7 +14,7 @@ export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
 
   @Get(":userId")
-  getCurrentUserCart(@Param("userId") userId) {
+  getCurrentUserCart(@Param("userId") userId: number) {
     return this.cartsService.getCurrentUserCart(userId);
   }
 

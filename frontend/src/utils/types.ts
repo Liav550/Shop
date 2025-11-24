@@ -11,6 +11,12 @@ type User = {
   email: string;
 };
 
+type ProductItemDTO = {
+  cartId: number;
+  productId: number;
+  amount: number;
+};
+
 type CartItem = {
   amount: number;
   product: Product;
@@ -21,4 +27,4 @@ type Cart = {
   orderItems: CartItem[];
 };
 
-export type { Product, User, CartItem, Cart };
+export type { Product, User, CartItem, Cart, ProductItemDTO };

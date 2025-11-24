@@ -26,8 +26,7 @@ const ProductList: FC<ProductListProps> = ({ list }) => {
           <ProductCard
             key={"amount" in item ? item.product.id : item.id}
             product={"amount" in item ? item.product : item}
-            showQuantity={"amount" in item}
-            showCartButton={"amount" in item === false}
+            isCartItem={"amount" in item}
           />
         ))}
       </Box>

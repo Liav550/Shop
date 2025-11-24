@@ -2,16 +2,31 @@ import { Box, Button, TextField } from "@mui/material";
 import { type FC } from "react";
 import type { Product } from "../utils/types";
 import { colorPalette } from "../utils/consts";
+import { useCart } from "../contexts/useCart";
+import { FaTrashAlt } from "react-icons/fa";
+
 interface ProductCardProps {
   product: Product;
-  showQuantity?: boolean;
-  showCartButton?: boolean;
+  isCartItem?: boolean;
 }
-const ProductCard: FC<ProductCardProps> = ({
-  product,
-  showQuantity = false,
-  showCartButton = true,
-}) => {
+const ProductCard: FC<ProductCardProps> = ({ product, isCartItem = false }) => {
+  const { addToCart, removeFromCart } = useCart();
+
+  const onAddToCart = async () => {
+    try {
+      await addToCart(product.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onRemoveFromCart = async () => {
+    try {
+      await removeFromCart(product.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <Box
       sx={{
@@ -49,14 +64,14 @@ const ProductCard: FC<ProductCardProps> = ({
         >
           {product.price}$
         </Box>
-        {showQuantity && (
+        {isCartItem && (
           <TextField
             sx={{ flexGrow: 1, width: "30%", height: "20%", padding: 0 }}
             defaultValue={1}
             type="number"
           ></TextField>
         )}
-        {showCartButton && (
+        {!isCartItem ? (
           <Button
             sx={{
               flexGrow: 1,
@@ -64,8 +79,13 @@ const ProductCard: FC<ProductCardProps> = ({
               color: "black",
               fontSize: "0.8rem",
             }}
+            onClick={onAddToCart}
           >
             Add To Cart
+          </Button>
+        ) : (
+          <Button onClick={onRemoveFromCart}>
+            <FaTrashAlt color={colorPalette.brown} />
           </Button>
         )}
       </Box>

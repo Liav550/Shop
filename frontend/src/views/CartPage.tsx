@@ -1,15 +1,11 @@
-import { useAuth } from "../contexts/useAuth";
-import { useGetRequest } from "../hooks/useGetRequest";
-import type { Cart } from "../utils/types";
+import { useCart } from "../contexts/useCart";
 import ProductList from "./ProductList";
 
 const CartPage = () => {
-  const { user } = useAuth();
+  const { cart } = useCart();
+  console.log(cart);
 
-  console.log(user);
-  const { data } = useGetRequest<Cart>(`/carts/${user?.id}`);
-
-  return data?.orderItems && <ProductList list={data?.orderItems} />;
+  return cart?.orderItems && <ProductList list={cart?.orderItems} />;
 };
 
 export default CartPage;

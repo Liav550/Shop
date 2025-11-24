@@ -3,6 +3,7 @@ import { AppDataSource } from "../connection";
 import { Order } from "../entities/Order";
 import { S3Handler } from "../aws/s3hander";
 import { OrderItem } from "../entities/OrderItem";
+import { CartDTO } from "../utils/types";
 
 const ordersRepository = AppDataSource.getRepository(Order);
 const orderItemsRepository = AppDataSource.getRepository(OrderItem);
@@ -11,25 +12,47 @@ const orderItemsRepository = AppDataSource.getRepository(OrderItem);
 export class CartsService {
   constructor(private readonly s3handler: S3Handler) {}
 
-  async getCurrentUserCart(userId) {
-    const currentCart = await ordersRepository
+  async getCurrentUserCart(userId: number) {
+    // load the ordering order for the user with its items and products
+    const order = await ordersRepository
       .createQueryBuilder("order")
       .innerJoin("order.user", "user")
-      .innerJoinAndSelect("order.orderItems", "items")
-      .innerJoinAndSelect("items.product", "product")
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      .leftJoinAndSelect("order.orderItems", "items")
+      .leftJoinAndSelect("items.product", "product")
       .where("user.id = :userId", { userId })
       .andWhere("order.status = :status", { status: "ORDERING" })
-      .select(["order.id", "items.amount", "product"])
       .getOne();
 
-    for (const item of currentCart.orderItems) {
-      const url = await this.s3handler.getImageUrl(item.product.image);
+    console.log(order);
 
-      item.product.image = url;
+    if (!order) {
+      return { id: null, orderItems: null } as CartDTO;
     }
 
-    return currentCart;
+    if (!order.orderItems || order.orderItems.length === 0) {
+      return { id: order.id, orderItems: null } as unknown as CartDTO;
+    }
+
+    const cart: CartDTO = {
+      id: order.id,
+      orderItems: [],
+    };
+
+    for (const item of order.orderItems) {
+      const product = item.product;
+      if (product && product.image) {
+        try {
+          const url = await this.s3handler.getImageUrl(product.image);
+          product.image = url;
+        } catch (err) {
+          console.error("Failed to fetch product image URL:", err);
+        }
+      }
+
+      cart.orderItems.push({ amount: item.amount, product });
+    }
+
+    return cart;
   }
 
   async addProductToCart(cartId: number, productId: number) {
