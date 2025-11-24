@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { AppDataSource } from "../connection";
 import { Product } from "../entities/Product";
-import { S3Handler } from "../s3hander";
+import { S3Handler } from "../aws/s3hander";
 
 const productsRepository = AppDataSource.getRepository(Product);
 

@@ -11,7 +11,7 @@ import {
   BUCKET_NAME,
   BUCKET_REGION,
   SECRET_ACCESS_KEY,
-} from "./utils/consts";
+} from "../utils/consts";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const s3 = new S3Client({

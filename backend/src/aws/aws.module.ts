@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { S3Handler } from "../s3hander";
+import { S3Handler } from "./s3hander";
 
 @Module({
   providers: [S3Handler],

@@ -5,6 +5,8 @@ import ProductList from "./ProductList";
 
 const CartPage = () => {
   const { user } = useAuth();
+
+  console.log(user);
   const { data } = useGetRequest<Cart>(`/carts/${user?.id}`);
 
   return data?.orderItems && <ProductList list={data?.orderItems} />;
