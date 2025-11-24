@@ -11,6 +11,7 @@ interface CartContextType {
   addToCart: (productId: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
   changeProductAmount: (productId: number, amount: number) => Promise<void>;
+  orderCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType>({
@@ -18,11 +19,14 @@ const CartContext = createContext<CartContextType>({
   addToCart: async () => {},
   removeFromCart: async () => {},
   changeProductAmount: async () => {},
+  orderCart: async () => {},
 });
 
 export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useAuth();
-  const { data: cart, refetch } = useGetRequest<Cart>(`/carts/${user?.id}`);
+  const { data: cart, refetch: refetchCart } = useGetRequest<Cart>(
+    `/carts/${user?.id}`
+  );
 
   const { mutateAsync: add } = usePostRequest<
     ProductItemDTO,
@@ -37,19 +41,25 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const removeFromCart = async (productId: number) => {
     await remove({ productId });
 
-    refetch();
+    refetchCart();
   };
 
   const addToCart = async (productId: number) => {
     await add({ productId });
 
-    refetch();
+    refetchCart();
+  };
+
+  const orderCart = async () => {
+    await axiosInstance.patch(`/carts/${cart?.id}/order`);
+
+    refetchCart();
   };
 
   const changeProductAmount = async (productId: number, amount: number) => {
     await axiosInstance.patch(`carts/${cart?.id}/${productId}`, { amount });
 
-    refetch();
+    refetchCart();
   };
 
   return (
@@ -59,6 +69,7 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
         addToCart,
         removeFromCart,
         changeProductAmount,
+        orderCart,
       }}
     >
       {children}

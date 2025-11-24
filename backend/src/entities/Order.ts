@@ -15,6 +15,9 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ name: "user_id" })
+  userId: number;
+
   @ManyToOne(() => User, (user: User) => user.orders)
   @JoinColumn({ name: "user_id" })
   user: User;
@@ -22,7 +25,7 @@ export class Order {
   @Column({ name: "ordered_at" })
   orderedAt: Date;
 
-  @Column({ type: "enum", enum: OrderStatus, default: OrderStatus.ORDERING })
+  @Column({ default: "ORDERING" })
   status: OrderStatus;
 
   @OneToMany(() => OrderItem, (orderItem: OrderItem) => orderItem.order)

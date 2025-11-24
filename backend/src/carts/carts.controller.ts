@@ -34,6 +34,11 @@ export class CartsController {
     return this.cartsService.removeProductFromCart(cartId, body.productId);
   }
 
+  @Patch(":cartId/order")
+  async order(@Param("cartId") cartId: number) {
+    await this.cartsService.order(cartId);
+  }
+
   @Patch(":cartId/:productId")
   changeProductQuantity(
     @Body() body: { amount: number },

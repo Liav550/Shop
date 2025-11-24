@@ -4,7 +4,7 @@ import ProductList from "./ProductList";
 import { FaShoppingCart } from "react-icons/fa";
 import { colorPalette } from "../utils/consts";
 const CartPage = () => {
-  const { cart } = useCart();
+  const { cart, orderCart } = useCart();
 
   return cart?.orderItems ? (
     <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
@@ -24,6 +24,7 @@ const CartPage = () => {
           fontSize: "2rem",
           margin: "1rem 0",
         }}
+        onClick={orderCart}
       >
         <Box sx={{ mr: "1rem" }}>Ship</Box>
         <FaShoppingCart />

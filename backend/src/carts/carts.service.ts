@@ -23,7 +23,9 @@ export class CartsService {
       .getOne();
 
     if (!order) {
-      return { id: null, orderItems: null } as CartDTO;
+      const newCartId = (await this.createNewCart(userId)).id;
+
+      return { id: newCartId, orderItems: null };
     }
 
     if (!order.orderItems || order.orderItems.length === 0) {
@@ -87,5 +89,20 @@ export class CartsService {
     }
 
     return await orderItemsRepository.save(chosenOrderItem);
+  }
+
+  async order(cartId: number) {
+    const cart = await ordersRepository.findOne({ where: { id: cartId } });
+
+    cart.status = "PENDING";
+    cart.orderedAt = new Date();
+
+    await ordersRepository.save(cart);
+  }
+
+  private async createNewCart(userId: number): Promise<Order> {
+    const cart = { userId };
+
+    return ordersRepository.save(cart);
   }
 }

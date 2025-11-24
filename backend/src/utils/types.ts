@@ -1,11 +1,6 @@
 import { Product } from "../entities/Product";
 
-export enum OrderStatus {
-  ORDERING,
-  PENDING,
-  DELIVERING,
-  DELIVERED,
-}
+export type OrderStatus = "ORDERING" | "PENDING" | "DELIVERING" | "DELIVERED";
 
 export interface CartDTO {
   id: number;
