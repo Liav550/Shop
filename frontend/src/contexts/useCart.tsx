@@ -42,10 +42,14 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const addToCart = async (productId: number) => {
     await add({ productId });
+
+    refetch();
   };
 
   const changeProductAmount = async (productId: number, amount: number) => {
     await axiosInstance.patch(`carts/${cart?.id}/${productId}`, { amount });
+
+    refetch();
   };
 
   return (

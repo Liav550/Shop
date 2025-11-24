@@ -72,6 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("rememberMe");
+    setRememberMe(false);
     setToken(null);
   };
 
