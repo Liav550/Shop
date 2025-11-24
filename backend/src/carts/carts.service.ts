@@ -13,7 +13,6 @@ export class CartsService {
   constructor(private readonly s3handler: S3Handler) {}
 
   async getCurrentUserCart(userId: number) {
-    // load the ordering order for the user with its items and products
     const order = await ordersRepository
       .createQueryBuilder("order")
       .innerJoin("order.user", "user")
@@ -22,8 +21,6 @@ export class CartsService {
       .where("user.id = :userId", { userId })
       .andWhere("order.status = :status", { status: "ORDERING" })
       .getOne();
-
-    console.log(order);
 
     if (!order) {
       return { id: null, orderItems: null } as CartDTO;

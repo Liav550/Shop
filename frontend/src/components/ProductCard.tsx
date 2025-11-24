@@ -1,5 +1,5 @@
-import { Box, Button, TextField } from "@mui/material";
-import { type FC } from "react";
+import { Box, Button, Input } from "@mui/material";
+import { type ChangeEvent, type FC } from "react";
 import type { Product } from "../utils/types";
 import { colorPalette } from "../utils/consts";
 import { useCart } from "../contexts/useCart";
@@ -7,10 +7,15 @@ import { FaTrashAlt } from "react-icons/fa";
 
 interface ProductCardProps {
   product: Product;
+  amount?: number;
   isCartItem?: boolean;
 }
-const ProductCard: FC<ProductCardProps> = ({ product, isCartItem = false }) => {
-  const { addToCart, removeFromCart } = useCart();
+const ProductCard: FC<ProductCardProps> = ({
+  product,
+  isCartItem = false,
+  amount = 1,
+}) => {
+  const { addToCart, removeFromCart, changeProductAmount } = useCart();
 
   const onAddToCart = async () => {
     try {
@@ -27,6 +32,29 @@ const ProductCard: FC<ProductCardProps> = ({ product, isCartItem = false }) => {
       console.error(error);
     }
   };
+
+  const validate = async (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const val = e.target.value;
+
+    if (val === "" || val === null) {
+      e.target.value = "1";
+      return;
+    }
+
+    const num = Number(val);
+
+    if (!Number.isInteger(num) || num < 1) {
+      e.target.value = "1";
+      return;
+    }
+
+    e.target.value = String(num);
+
+    await changeProductAmount(product.id, parseInt(e.target.value));
+  };
+
   return (
     <Box
       sx={{
@@ -65,11 +93,17 @@ const ProductCard: FC<ProductCardProps> = ({ product, isCartItem = false }) => {
           {product.price}$
         </Box>
         {isCartItem && (
-          <TextField
-            sx={{ flexGrow: 1, width: "30%", height: "20%", padding: 0 }}
-            defaultValue={1}
+          <Input
+            sx={{
+              flexGrow: 1,
+              width: "30%",
+              padding: 0,
+            }}
+            defaultValue={amount}
+            onChange={validate}
             type="number"
-          ></TextField>
+            inputProps={{ min: 1, step: 1 }}
+          ></Input>
         )}
         {!isCartItem ? (
           <Button

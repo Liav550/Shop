@@ -4,22 +4,25 @@ import { useAuth } from "./useAuth";
 import { useGetRequest } from "../hooks/useGetRequest";
 import { usePostRequest } from "../hooks/usePostRequest";
 import { useDeleteRequest } from "../hooks/useDeleteRequest";
+import axiosInstance from "../api/axiosInstance";
 
 interface CartContextType {
   cart: Cart | null;
   addToCart: (productId: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
+  changeProductAmount: (productId: number, amount: number) => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType>({
   cart: null,
   addToCart: async () => {},
   removeFromCart: async () => {},
+  changeProductAmount: async () => {},
 });
 
 export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useAuth();
-  const { data: cart } = useGetRequest<Cart>(`/carts/${user?.id}`);
+  const { data: cart, refetch } = useGetRequest<Cart>(`/carts/${user?.id}`);
 
   const { mutateAsync: add } = usePostRequest<
     ProductItemDTO,
@@ -34,16 +37,25 @@ export const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const removeFromCart = async (productId: number) => {
     await remove({ productId });
 
-    //refetch();
+    refetch();
   };
 
   const addToCart = async (productId: number) => {
     await add({ productId });
   };
 
+  const changeProductAmount = async (productId: number, amount: number) => {
+    await axiosInstance.patch(`carts/${cart?.id}/${productId}`, { amount });
+  };
+
   return (
     <CartContext.Provider
-      value={{ cart: cart ? cart : null, addToCart, removeFromCart }}
+      value={{
+        cart: cart ? cart : null,
+        addToCart,
+        removeFromCart,
+        changeProductAmount,
+      }}
     >
       {children}
     </CartContext.Provider>
