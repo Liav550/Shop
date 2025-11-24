@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from "@nestjs/common";
 import { CartsService } from "./carts.service";
 
 @Controller("carts")
@@ -24,5 +32,18 @@ export class CartsController {
     @Param("cartId") cartId: number
   ) {
     return this.cartsService.removeProductFromCart(cartId, body.productId);
+  }
+
+  @Patch(":cartId/:productId")
+  changeProductQuantity(
+    @Body() body: { amount: number },
+    @Param("cartId") cartId: number,
+    @Param("productId") productId: number
+  ) {
+    return this.cartsService.changeProductQuantity(
+      cartId,
+      productId,
+      body.amount
+    );
   }
 }

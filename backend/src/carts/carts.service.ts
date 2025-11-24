@@ -52,4 +52,20 @@ export class CartsService {
 
     return { status: "Deleted" };
   }
+
+  async changeProductQuantity(
+    cartId: number,
+    productId: number,
+    amount: number
+  ) {
+    const chosenOrderItem = await orderItemsRepository.findOne({
+      where: { orderId: cartId, productId },
+    });
+
+    if (amount !== chosenOrderItem.amount) {
+      chosenOrderItem.amount = amount;
+    }
+
+    return await orderItemsRepository.save(chosenOrderItem);
+  }
 }
