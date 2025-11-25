@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { usePostRequest } from "../hooks/usePostRequest";
 import { useGetRequest } from "../hooks/useGetRequest";
-import type { User } from "../utils/types";
+import type { GoogleLoginProps, LocalLoginProps, User } from "../utils/types";
 
 interface AuthContextType {
   user: User | null;
@@ -10,6 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  googleLogin: (email: string, sub: string) => Promise<void>;
   rememberMe: boolean;
   setRemember: (value: boolean) => void;
   setToken: (token: string | null) => void;
@@ -22,6 +23,7 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   isLoading: false,
   login: async () => {},
+  googleLogin: async () => {},
   logout: () => {},
   rememberMe: false,
   setRemember: () => {},
@@ -48,11 +50,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     {
       token: string;
     },
-    { email: string; password: string }
+    LocalLoginProps | GoogleLoginProps
   >("/login");
 
   const login = async (email: string, password: string) => {
-    const res = await loginRequest({ email, password });
+    const res = await loginRequest({ email, password, provider: "local" });
+    localStorage.setItem("jwt", res.token);
+    setToken(res.token);
+  };
+
+  const googleLogin = async (email: string, sub: string) => {
+    const res = await loginRequest({ email, sub, provider: "google" });
     localStorage.setItem("jwt", res.token);
     setToken(res.token);
   };
@@ -86,6 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         isAuthenticated,
         isLoading: isLoading || isPending,
         login,
+        googleLogin,
         logout,
         rememberMe,
         setRemember,

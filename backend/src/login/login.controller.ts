@@ -8,14 +8,15 @@ import {
 } from "@nestjs/common";
 import { LoginService } from "./login.service";
 import { AuthGuard } from "./auth.guard";
+import { GoogleLoginProps, LocalLoginProps } from "../utils/types";
 
 @Controller("login")
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
   @Post()
-  login(@Body() body: { email: string; password: string }) {
-    return this.loginService.login(body.email, body.password);
+  login(@Body() body: LocalLoginProps | GoogleLoginProps) {
+    return this.loginService.login(body);
   }
 
   @UseGuards(AuthGuard)

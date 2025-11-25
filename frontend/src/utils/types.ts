@@ -27,4 +27,24 @@ type Cart = {
   orderItems: CartItem[];
 };
 
-export type { Product, User, CartItem, Cart, ProductItemDTO };
+type LocalLoginProps = {
+  email: string;
+  password: string;
+  provider: string;
+};
+
+type GoogleLoginProps = {
+  email: string;
+  sub: string;
+  provider: string;
+};
+
+export type {
+  Product,
+  User,
+  CartItem,
+  Cart,
+  ProductItemDTO,
+  LocalLoginProps,
+  GoogleLoginProps,
+};

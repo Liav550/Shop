@@ -10,9 +10,10 @@ import { useAuth } from "../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
 import { colorPalette } from "../utils/consts";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode, type JwtPayload } from "jwt-decode";
 
 const LoginPage = () => {
-  const { login, token, setToken, rememberMe, setRemember } = useAuth();
+  const { login, token, rememberMe, setRemember, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   if (token && localStorage.getItem("rememberMe") === "true") {
@@ -34,6 +35,7 @@ const LoginPage = () => {
       console.error("Login failed", err);
     }
   };
+
   return (
     <Box
       display="flex"
@@ -98,9 +100,17 @@ const LoginPage = () => {
 
           <GoogleLogin
             auto_select={true}
-            onSuccess={(credentials) => {
-              setToken(credentials.credential!);
-              navigate("/products");
+            onSuccess={async (credentials) => {
+              try {
+                const googleUser: JwtPayload = jwtDecode(
+                  credentials.credential!
+                );
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                await googleLogin((googleUser as any).email, googleUser.sub!);
+                navigate("/products");
+              } catch (error) {
+                console.error("Google login failed", error);
+              }
             }}
           ></GoogleLogin>
         </Box>
