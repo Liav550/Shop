@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   GetObjectCommand,
   PutObjectCommand,
@@ -13,6 +11,7 @@ import {
   SECRET_ACCESS_KEY,
 } from "../utils/consts";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { randomBytes } from "crypto";
 
 const s3 = new S3Client({
   region: BUCKET_REGION,
@@ -24,17 +23,20 @@ const s3 = new S3Client({
 
 @Injectable()
 export class S3Handler {
-  async uploadImage(file: Express.Multer.File) {
+  async uploadImage(file: Express.Multer.File): Promise<string> {
+    const newName = randomBytes(32).toString("hex");
     const params = {
       Bucket: BUCKET_NAME,
-      Key: file.originalname,
+      Key: newName,
       Body: file.buffer,
       ContentType: file.mimetype,
     };
 
     const command = new PutObjectCommand(params);
 
-    return await s3.send(command);
+    await s3.send(command);
+
+    return newName;
   }
 
   async getImageUrl(key: string) {

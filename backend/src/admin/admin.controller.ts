@@ -1,7 +1,17 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from "@nestjs/common";
 import { AdminGuard } from "./admin.guard";
 import { AuthGuard } from "../login/auth.guard";
 import { AdminService } from "./admin.service";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { NewProductDTO } from "../utils/types";
 
 @Controller("admin")
 @UseGuards(AuthGuard, AdminGuard)
@@ -26,5 +36,14 @@ export class AdminController {
   @Get("orders/count")
   getOrdersCount() {
     return this.adminService.getOrdersCount();
+  }
+
+  @Post("products")
+  @UseInterceptors(FileInterceptor("image"))
+  uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: NewProductDTO
+  ) {
+    return this.adminService.createProduct(file, body);
   }
 }

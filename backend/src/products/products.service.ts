@@ -20,8 +20,4 @@ export class ProductsService {
 
     return products;
   }
-
-  async createProduct(file: Express.Multer.File) {
-    return this.s3handler.uploadImage(file);
-  }
 }

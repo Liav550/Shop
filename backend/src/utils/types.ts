@@ -23,3 +23,9 @@ export interface ProductItemDTO {
   amount: number;
   product: Product;
 }
+
+export interface NewProductDTO {
+  name: string;
+  description: string;
+  price: number;
+}
