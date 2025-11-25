@@ -2,9 +2,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/useAuth";
 import { NavBar } from "../components/NavBar";
 
-const UserPrivateRoute = () => {
-  const { token } = useAuth();
-  return token ? (
+const AdminPrivateRoute = () => {
+  const { user } = useAuth();
+  return user?.role === "admin" ? (
     <>
       <NavBar />
       <Outlet />
@@ -14,4 +14,4 @@ const UserPrivateRoute = () => {
   );
 };
 
-export { UserPrivateRoute };
+export { AdminPrivateRoute };

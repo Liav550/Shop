@@ -32,7 +32,7 @@ export class LoginService {
       await usersRepository.save(newUser);
 
       const token = sign(
-        { id: newUser.id, email: newUser.email },
+        { id: newUser.id, email: newUser.email, role: newUser.role },
         process.env.SECRET
       );
 
@@ -51,7 +51,10 @@ export class LoginService {
     }
 
     // @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    const token = sign({ id: user.id, email: user.email }, process.env.SECRET);
+    const token = sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.SECRET
+    );
 
     return { token };
   }

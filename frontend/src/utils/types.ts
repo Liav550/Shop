@@ -9,6 +9,7 @@ type Product = {
 type User = {
   id: number;
   email: string;
+  role: "user" | "admin";
 };
 
 type ProductItemDTO = {
@@ -39,6 +40,12 @@ type GoogleLoginProps = {
   provider: string;
 };
 
+type Path = {
+  to: string;
+  role: "user" | "admin";
+  name: string;
+};
+
 export type {
   Product,
   User,
@@ -47,4 +54,5 @@ export type {
   ProductItemDTO,
   LocalLoginProps,
   GoogleLoginProps,
+  Path,
 };

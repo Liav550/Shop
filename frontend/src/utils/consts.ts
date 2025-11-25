@@ -5,4 +5,9 @@ const colorPalette = {
   brown: "#CE7E5A",
 };
 
-export { colorPalette };
+const authLevels = {
+  user: 2,
+  admin: 1,
+};
+
+export { colorPalette, authLevels };
