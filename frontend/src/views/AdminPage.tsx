@@ -4,6 +4,7 @@ import { FaShoppingCart, FaUser } from "react-icons/fa";
 import type { ReactNode } from "react";
 import { RiAdminFill } from "react-icons/ri";
 import { RiProductHuntFill } from "react-icons/ri";
+import { ProductCreationForm } from "../components/ProductCreationForm";
 interface InformativeCardProps {
   title: string;
   url: string;
@@ -55,7 +56,7 @@ const AdminPage = () => {
         </Grid>
       ))}
       <Grid size={4}>
-        <Paper>5</Paper>
+        <ProductCreationForm />
       </Grid>
       <Grid size={8}>
         <Paper>6</Paper>

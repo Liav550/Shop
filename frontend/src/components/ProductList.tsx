@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "./ProductCard";
 import type { Product, CartItem } from "../utils/types";
 import type { FC } from "react";
 

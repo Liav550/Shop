@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { useCart } from "../contexts/useCart";
-import ProductList from "./ProductList";
+import ProductList from "../components/ProductList";
 import { FaShoppingCart } from "react-icons/fa";
 import { colorPalette } from "../utils/consts";
 const CartPage = () => {

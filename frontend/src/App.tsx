@@ -4,7 +4,7 @@ import LoginPage from "./views/LoginPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { UserPrivateRoute } from "./routes/UserRoute";
 import CartPage from "./views/CartPage";
-import Home from "./views/Home";
+import Home from "./views/HomePage";
 import { RegisterPage } from "./views/RegisterPage";
 import { AdminPrivateRoute } from "./routes/AdminRoute";
 import AdminPage from "./views/AdminPage";
