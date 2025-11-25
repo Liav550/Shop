@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import { colorPalette } from "../utils/consts";
 import type { FC, ReactNode } from "react";
+import { useGetRequest } from "../hooks/useGetRequest";
+import { useAuth } from "../contexts/useAuth";
 
 interface InformativeCardProps {
   title: string;
@@ -15,7 +17,10 @@ const AdminInformativeCard: FC<InformativeCardProps> = ({
   description,
   icon,
 }) => {
-  console.log(url);
+  const { token } = useAuth();
+
+  const { data } = useGetRequest<number>(url, !!token, token ?? undefined);
+
   return (
     <Box
       sx={{
@@ -43,7 +48,7 @@ const AdminInformativeCard: FC<InformativeCardProps> = ({
         }}
       >
         <Box component="h3" margin={0}>
-          1000
+          {data !== undefined ? data : "Loading..."}
         </Box>
         <Box margin={0} component={"p"}>
           {description}
