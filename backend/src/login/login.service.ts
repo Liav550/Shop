@@ -55,4 +55,23 @@ export class LoginService {
 
     return { token };
   }
+
+  async createNewUser(email: string, password: string) {
+    const existingUser = await usersRepository.findOne({ where: { email } });
+    if (existingUser) {
+      throw new Error("User with this email already exists");
+    }
+
+    const hashedPassword = await hash(password, 10);
+
+    const newUser = usersRepository.create({
+      email,
+      password: hashedPassword,
+      role: "user",
+    });
+
+    await usersRepository.save(newUser);
+
+    return { id: newUser.id, email: newUser.email };
+  }
 }

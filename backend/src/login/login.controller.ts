@@ -25,4 +25,10 @@ export class LoginController {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
     return { user: req.user };
   }
+
+  @Post("/register")
+  async register(@Body() body: LocalLoginProps) {
+    const { email, password } = body;
+    return this.loginService.createNewUser(email, password);
+  }
 }

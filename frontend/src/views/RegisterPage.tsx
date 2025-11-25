@@ -1,7 +1,13 @@
 import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
 import { colorPalette } from "../utils/consts";
+import { usePostRequest } from "../hooks/usePostRequest";
+import type { LocalLoginProps } from "../utils/types";
 
 const RegisterPage = () => {
+  const { mutateAsync: register } = usePostRequest<
+    { a: number },
+    LocalLoginProps
+  >("/login/register");
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -26,7 +32,7 @@ const RegisterPage = () => {
       confirmPassword,
     });
 
-    // Send the new user to the backend here
+    await register({ email, password, provider: "local" });
   };
   return (
     <Box
