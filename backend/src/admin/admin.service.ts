@@ -42,4 +42,15 @@ export class AdminService {
 
     await productsRepository.save(newProduct);
   }
+
+  async deleteProduct(id: number) {
+    const product = await productsRepository.findOneBy({ id });
+
+    if (product) {
+      await this.s3handler.deleteImage(product.image);
+      await productsRepository.delete({ id });
+    }
+
+    return { message: "Product deleted successfully" };
+  }
 }

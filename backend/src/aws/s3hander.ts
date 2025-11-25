@@ -1,4 +1,5 @@
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
@@ -49,5 +50,15 @@ export class S3Handler {
     const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
 
     return url;
+  }
+
+  async deleteImage(key: string) {
+    const deleteParams = {
+      Bucket: BUCKET_NAME,
+      Key: key,
+    };
+    const command = new DeleteObjectCommand(deleteParams);
+
+    await s3.send(command);
   }
 }

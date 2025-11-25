@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   UploadedFile,
   UseGuards,
@@ -45,5 +47,10 @@ export class AdminController {
     @Body() body: NewProductDTO
   ) {
     return this.adminService.createProduct(file, body);
+  }
+
+  @Delete("products/:id")
+  deleteProduct(@Param("id") id: number) {
+    return this.adminService.deleteProduct(id);
   }
 }
