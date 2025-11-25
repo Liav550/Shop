@@ -1,18 +1,19 @@
 import { Box } from "@mui/material";
 import { colorPalette } from "../utils/consts";
-import type { FC } from "react";
-import { FaUser } from "react-icons/fa";
+import type { FC, ReactNode } from "react";
 
 interface InformativeCardProps {
   title: string;
   url: string;
   description: string;
+  icon: ReactNode;
 }
 
 const AdminInformativeCard: FC<InformativeCardProps> = ({
   title,
   url,
   description,
+  icon,
 }) => {
   console.log(url);
   return (
@@ -27,11 +28,11 @@ const AdminInformativeCard: FC<InformativeCardProps> = ({
         gap: 1,
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", height: "50%" }}>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <Box component={"h2"} sx={{ flexGrow: 1 }}>
           {title}
         </Box>
-        <FaUser></FaUser>
+        {icon}
       </Box>
       <Box
         sx={{

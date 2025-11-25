@@ -1,10 +1,14 @@
 import { Grid, Paper } from "@mui/material";
 import { AdminInformativeCard } from "../components/AdminInformativeCard";
-
+import { FaShoppingCart, FaUser } from "react-icons/fa";
+import type { ReactNode } from "react";
+import { RiAdminFill } from "react-icons/ri";
+import { RiProductHuntFill } from "react-icons/ri";
 interface InformativeCardProps {
   title: string;
   url: string;
   description: string;
+  icon: ReactNode;
 }
 
 const AdminPage = () => {
@@ -14,24 +18,28 @@ const AdminPage = () => {
       url: "/admin/users/count",
       description:
         "Total registered users in the system across all platforms and registration sources",
+      icon: <FaUser />,
     },
     {
       title: "Admins",
       url: "/admin/admins/count",
       description:
         "Administrators with elevated privileges who manage products, orders and platform settings",
+      icon: <RiAdminFill />,
     },
     {
       title: "Products",
       url: "/admin/products/count",
       description:
         "Active products currently available for purchase in the catalog (visible to users)",
+      icon: <RiProductHuntFill />,
     },
     {
       title: "Orders",
       url: "/admin/orders/count",
       description:
         "All orders placed by users, including pending, processing and completed statuses",
+      icon: <FaShoppingCart />,
     },
   ];
   return (
@@ -42,6 +50,7 @@ const AdminPage = () => {
             url={card.url}
             title={card.title}
             description={card.description}
+            icon={card.icon}
           ></AdminInformativeCard>
         </Grid>
       ))}
