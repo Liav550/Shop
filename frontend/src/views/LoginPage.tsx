@@ -7,7 +7,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { useAuth } from "../contexts/useAuth";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { colorPalette } from "../utils/consts";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode, type JwtPayload } from "jwt-decode";
@@ -61,16 +61,12 @@ const LoginPage = () => {
       >
         <h2>Log In</h2>
         <FormControl>
-          <InputLabel htmlFor="email" required>
-            Email address
-          </InputLabel>
-          <Input id="email" type="email" />
+          <InputLabel htmlFor="email">Email address</InputLabel>
+          <Input id="email" type="email" required />
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="password" required>
-            Password
-          </InputLabel>
-          <Input id="password" type="password" />
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <Input id="password" type="password" required />
         </FormControl>
         <Box display="flex" flexDirection="row">
           <Box flexGrow={1}>
@@ -87,12 +83,17 @@ const LoginPage = () => {
             justifyContent={"center"}
             alignItems={"center"}
           >
-            Don't have an account? &nbsp; <a href="/signup">Sign Up</a>
+            Don't have an account? &nbsp;{" "}
+            <NavLink to="/register">Sign Up</NavLink>
           </Box>
         </Box>
         <Box display={"flex"} flexDirection={"row"} gap={"1rem"}>
           <Button
-            sx={{ flexGrow: 1, backgroundColor: colorPalette.bege }}
+            sx={{
+              flexGrow: 1,
+              backgroundColor: colorPalette.brown,
+              color: "black",
+            }}
             type="submit"
           >
             Submit

@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserRoute from "./routes/UserRoute";
 import CartPage from "./views/CartPage";
 import Home from "./views/Home";
+import { RegisterPage } from "./views/RegisterPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />}></Route>
           <Route element={<UserRoute />}>
             <Route path="/products" element={<Home />} />
             <Route path="/cart" element={<CartPage />}></Route>
