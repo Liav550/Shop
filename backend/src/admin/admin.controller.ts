@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UploadedFile,
   UseGuards,
@@ -13,7 +14,7 @@ import { AdminGuard } from "./admin.guard";
 import { AuthGuard } from "../login/auth.guard";
 import { AdminService } from "./admin.service";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { NewProductDTO } from "../utils/types";
+import { NewProductDTO, OrderStatus } from "../utils/types";
 
 @Controller("admin")
 @UseGuards(AuthGuard, AdminGuard)
@@ -57,5 +58,13 @@ export class AdminController {
   @Get("orders")
   getAllOrders() {
     return this.adminService.getAllOrders();
+  }
+
+  @Patch("orders/:id/status")
+  updateOrderStatus(
+    @Param("id") id: number,
+    @Body("status") status: OrderStatus
+  ) {
+    return this.adminService.updateOrderStatus(id, status);
   }
 }

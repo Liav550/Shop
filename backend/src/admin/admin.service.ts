@@ -4,7 +4,7 @@ import { User } from "../entities/User";
 import { Product } from "../entities/Product";
 import { Order } from "../entities/Order";
 import { S3Handler } from "../aws/s3hander";
-import { NewProductDTO } from "../utils/types";
+import { NewProductDTO, OrderStatus } from "../utils/types";
 import { Not } from "typeorm";
 
 const usersRepository = AppDataSource.getRepository(User);
@@ -89,5 +89,16 @@ export class AdminService {
     }
 
     return orders;
+  }
+
+  async updateOrderStatus(id: number, status: OrderStatus) {
+    const order = await ordersRepository.findOneBy({ id });
+
+    if (order) {
+      order.status = status;
+      await ordersRepository.save(order);
+    }
+
+    return { status: "Order status updated successfully" };
   }
 }

@@ -37,7 +37,7 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
           Order #{order.id}
         </Typography>
         <Typography component={"span"} marginLeft={2}>
-          <StatusBadge status={order.status} />
+          <StatusBadge status={order.status} orderId={order.id} />
         </Typography>
         <Typography component={"span"} marginLeft={2} marginTop={0.5}>
           Ordered At &nbsp;
