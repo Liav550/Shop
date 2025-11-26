@@ -60,7 +60,7 @@ const AdminPage = () => {
         <ProductCreationForm />
       </Grid>
       <Grid size={8}>
-        <OrderList />
+        <OrderList url="admin/orders" />
       </Grid>
     </Grid>
   );

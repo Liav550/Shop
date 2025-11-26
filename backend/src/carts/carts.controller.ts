@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from "@nestjs/common";
 import { CartsService } from "./carts.service";
+import { AuthGuard } from "../login/auth.guard";
 
 @Controller("carts")
 export class CartsController {
@@ -16,6 +18,12 @@ export class CartsController {
   @Get(":userId")
   getCurrentUserCart(@Param("userId") userId: number) {
     return this.cartsService.getCurrentUserCart(userId);
+  }
+
+  @Get(":userId/all")
+  @UseGuards(AuthGuard)
+  getAllUserCarts(@Param("userId") userId: number) {
+    return this.cartsService.getAllUserCarts(userId);
   }
 
   @Post(":cartId/add")

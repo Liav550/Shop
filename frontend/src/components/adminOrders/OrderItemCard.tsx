@@ -21,7 +21,7 @@ const OrderItemCard: FC<OrderItemCardProps> = ({ product, amount }) => {
       <Box component={"b"}>x{amount}</Box>
       <Box component={"b"} marginLeft={"auto"}>
         {" "}
-        {product.price! * amount}$
+        {(product.price! * amount).toFixed(2)}$
       </Box>
     </Typography>
   );

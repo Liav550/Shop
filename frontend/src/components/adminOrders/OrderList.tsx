@@ -4,19 +4,25 @@ import { OrderCard } from "./OrderCard";
 import { useGetRequest } from "../../hooks/useGetRequest";
 import { useAuth } from "../../contexts/useAuth";
 import type { AdminOrder } from "../../utils/types";
+import type { FC } from "react";
 
-const OrderList = () => {
+interface OrderListProps {
+  url: string;
+  height?: string;
+}
+
+const OrderList: FC<OrderListProps> = ({ url, height }) => {
   const { token } = useAuth();
   const { data: orders } = useGetRequest<AdminOrder[]>(
-    "/admin/orders",
+    url,
     true,
     token ?? undefined
   );
 
-  return (
+  return orders && orders.length > 0 ? (
     <Box
       sx={{
-        height: "55vh",
+        height: height || "55vh",
         backgroundColor: colorPalette.brown,
         display: "flex",
         flexDirection: "column",
@@ -27,9 +33,12 @@ const OrderList = () => {
         overflowY: "auto",
       }}
     >
-      {orders &&
-        orders.map((order) => <OrderCard key={order.id} order={order} />)}
+      {orders.map((order) => (
+        <OrderCard key={order.id} order={order} />
+      ))}
     </Box>
+  ) : (
+    <Box> No Previous Orders</Box>
   );
 };
 

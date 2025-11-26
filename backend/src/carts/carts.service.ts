@@ -4,6 +4,7 @@ import { Order } from "../entities/Order";
 import { S3Handler } from "../aws/s3hander";
 import { OrderItem } from "../entities/OrderItem";
 import { CartDTO } from "../utils/types";
+import { Not } from "typeorm";
 
 const ordersRepository = AppDataSource.getRepository(Order);
 const orderItemsRepository = AppDataSource.getRepository(OrderItem);
@@ -104,5 +105,41 @@ export class CartsService {
     const cart = { userId };
 
     return ordersRepository.save(cart);
+  }
+
+  async getAllUserCarts(userId: number): Promise<Order[]> {
+    const orders = await ordersRepository.find({
+      where: { status: Not("ORDERING"), userId },
+      relations: ["orderItems", "orderItems.product", "user"],
+      select: {
+        id: true,
+        status: true,
+        orderedAt: true,
+        user: {
+          email: true,
+        },
+        orderItems: {
+          amount: true,
+          product: {
+            id: true,
+            name: true,
+            price: true,
+            image: true,
+          },
+        },
+      },
+    });
+
+    for (const order of orders) {
+      for (const item of order.orderItems) {
+        if (item.product) {
+          item.product.image = await this.s3handler.getImageUrl(
+            item.product.image
+          );
+        }
+      }
+    }
+
+    return orders;
   }
 }

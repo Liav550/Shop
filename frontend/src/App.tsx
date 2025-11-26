@@ -8,6 +8,7 @@ import Home from "./views/HomePage";
 import { RegisterPage } from "./views/RegisterPage";
 import { AdminPrivateRoute } from "./routes/AdminRoute";
 import AdminPage from "./views/AdminPage";
+import PreviousOrdersPage from "./views/PreviousOrdersPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route element={<UserPrivateRoute />}>
             <Route path="/products" element={<Home />} />
             <Route path="/cart" element={<CartPage />}></Route>
+            <Route path="/orders" element={<PreviousOrdersPage />}></Route>
           </Route>
           <Route element={<AdminPrivateRoute />}>
             <Route path="/admin" element={<AdminPage />}></Route>
