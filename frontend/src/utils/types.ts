@@ -46,7 +46,7 @@ type Path = {
   name: string;
 };
 
-type OrderStatus = "ORDERING" | "PENDING" | "DELIVERED" | "DEIVERING";
+type OrderStatus = "ORDERING" | "PENDING" | "DELIVERED" | "DELIVERING";
 
 type AdminOrder = {
   id: number;
