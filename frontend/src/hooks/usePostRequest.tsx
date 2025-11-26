@@ -14,7 +14,7 @@ export const usePostRequest = <TData, TVariables>(
     onSuccess?: (data: TData) => void;
     onError?: (error: unknown) => void;
     config?: AxiosRequestConfig;
-    withAuth?: boolean; // include JWT if true
+    withAuth?: boolean;
     contentType?: string;
   }
 ) => {

@@ -48,8 +48,8 @@ export class AdminService {
     const product = await productsRepository.findOneBy({ id });
 
     if (product) {
-      await this.s3handler.deleteImage(product.image);
-      await productsRepository.delete({ id });
+      product.exists = false;
+      await productsRepository.save(product);
     }
 
     return { message: "Product deleted successfully" };
@@ -80,9 +80,11 @@ export class AdminService {
 
     for (const order of orders) {
       for (const item of order.orderItems) {
-        item.product.image = await this.s3handler.getImageUrl(
-          item.product.image
-        );
+        if (item.product) {
+          item.product.image = await this.s3handler.getImageUrl(
+            item.product.image
+          );
+        }
       }
     }
 

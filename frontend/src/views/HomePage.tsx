@@ -3,10 +3,12 @@ import type { Product } from "../utils/types";
 import ProductList from "../components/ProductList";
 
 const HomePage = () => {
-  const productList: Product[] =
-    useGetRequest<Product[]>("/products").data || [];
+  const get = useGetRequest<Product[]>("/products");
 
-  return <ProductList list={productList} />;
+  const productList = get.data || [];
+  const refetch = get.refetch;
+
+  return <ProductList list={productList} refetch={refetch} />;
 };
 
 export default HomePage;

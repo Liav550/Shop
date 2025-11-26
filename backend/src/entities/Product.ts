@@ -20,4 +20,7 @@ export class Product {
 
   @OneToMany(() => OrderItem, (orderItem: OrderItem) => orderItem.product)
   productOrders: OrderItem[];
+
+  @Column()
+  exists: boolean;
 }

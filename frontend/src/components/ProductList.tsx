@@ -2,12 +2,14 @@ import { Box } from "@mui/material";
 import ProductCard from "./ProductCard";
 import type { Product, CartItem } from "../utils/types";
 import type { FC } from "react";
+import type { QueryObserverResult } from "@tanstack/react-query";
 
 interface ProductListProps {
   list: Product[] | CartItem[];
+  refetch?: () => Promise<QueryObserverResult<Product[], unknown>>;
 }
 
-const ProductList: FC<ProductListProps> = ({ list }) => {
+const ProductList: FC<ProductListProps> = ({ list, refetch }) => {
   return (
     <Box>
       <Box
@@ -28,6 +30,7 @@ const ProductList: FC<ProductListProps> = ({ list }) => {
             product={"amount" in item ? item.product : item}
             isCartItem={"amount" in item}
             amount={"amount" in item ? item.amount : 1}
+            refetch={refetch}
           />
         ))}
       </Box>

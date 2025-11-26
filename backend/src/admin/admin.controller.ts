@@ -41,7 +41,7 @@ export class AdminController {
   }
 
   @Post("products")
-  @UseInterceptors(FileInterceptor("image"))
+  @UseInterceptors(FileInterceptor("file"))
   uploadImage(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: NewProductDTO

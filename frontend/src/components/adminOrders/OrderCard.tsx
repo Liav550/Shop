@@ -70,7 +70,7 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
         })}
         <Typography display={"flex"} alignItems={"center"} marginTop={2}>
           <Box component={"b"} ml={"auto"}>
-            Total: {totalPrice}$
+            Total: {totalPrice.toFixed(2)}$
           </Box>
         </Typography>
       </AccordionDetails>
