@@ -47,12 +47,12 @@ const ProductCreationForm = () => {
       component={"form"}
       onSubmit={onSubmit}
       sx={{
-        height: "56.5vh",
+        height: "55vh",
         borderRadius: "8px",
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        padding: "2rem",
+        padding: "1rem",
         overflowY: "auto",
         backgroundColor: colorPalette.brown,
       }}

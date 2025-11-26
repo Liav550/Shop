@@ -1,10 +1,11 @@
-import { Grid, Paper } from "@mui/material";
+import { Grid } from "@mui/material";
 import { AdminInformativeCard } from "../components/AdminInformativeCard";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import type { ReactNode } from "react";
 import { RiAdminFill } from "react-icons/ri";
 import { RiProductHuntFill } from "react-icons/ri";
 import { ProductCreationForm } from "../components/ProductCreationForm";
+import { OrderList } from "../components/adminOrders/OrderList";
 interface InformativeCardProps {
   title: string;
   url: string;
@@ -59,7 +60,7 @@ const AdminPage = () => {
         <ProductCreationForm />
       </Grid>
       <Grid size={8}>
-        <Paper>6</Paper>
+        <OrderList />
       </Grid>
     </Grid>
   );

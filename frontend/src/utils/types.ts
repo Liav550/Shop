@@ -46,6 +46,16 @@ type Path = {
   name: string;
 };
 
+type OrderStatus = "ORDERING" | "PENDING" | "DELIVERED" | "DEIVERING";
+
+type AdminOrder = {
+  id: number;
+  orderedAt: string;
+  status: OrderStatus;
+  orderItems: CartItem[];
+  user: Pick<User, "email">;
+};
+
 export type {
   Product,
   User,
@@ -55,4 +65,6 @@ export type {
   LocalLoginProps,
   GoogleLoginProps,
   Path,
+  AdminOrder,
+  OrderStatus,
 };

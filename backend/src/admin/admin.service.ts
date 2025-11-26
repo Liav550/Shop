@@ -5,6 +5,7 @@ import { Product } from "../entities/Product";
 import { Order } from "../entities/Order";
 import { S3Handler } from "../aws/s3hander";
 import { NewProductDTO } from "../utils/types";
+import { Not } from "typeorm";
 
 const usersRepository = AppDataSource.getRepository(User);
 const productsRepository = AppDataSource.getRepository(Product);
@@ -52,5 +53,39 @@ export class AdminService {
     }
 
     return { message: "Product deleted successfully" };
+  }
+
+  async getAllOrders(): Promise<Order[]> {
+    const orders = await ordersRepository.find({
+      where: { status: Not("ORDERING") },
+      relations: ["orderItems", "orderItems.product", "user"],
+      select: {
+        id: true,
+        status: true,
+        orderedAt: true,
+        user: {
+          email: true,
+        },
+        orderItems: {
+          amount: true,
+          product: {
+            id: true,
+            name: true,
+            price: true,
+            image: true,
+          },
+        },
+      },
+    });
+
+    for (const order of orders) {
+      for (const item of order.orderItems) {
+        item.product.image = await this.s3handler.getImageUrl(
+          item.product.image
+        );
+      }
+    }
+
+    return orders;
   }
 }

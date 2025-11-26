@@ -53,4 +53,9 @@ export class AdminController {
   deleteProduct(@Param("id") id: number) {
     return this.adminService.deleteProduct(id);
   }
+
+  @Get("orders")
+  getAllOrders() {
+    return this.adminService.getAllOrders();
+  }
 }
