@@ -5,7 +5,9 @@ import { jwtDecode } from "jwt-decode";
 
 const AdminPrivateRoute = () => {
   const { token } = useAuth();
-  const user: { role: string } = jwtDecode(token!);
+  const user: { role: string } | null = token
+    ? (jwtDecode(token) as { role: string })
+    : null;
 
   return user?.role === "admin" ? (
     <>

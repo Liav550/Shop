@@ -100,7 +100,6 @@ const LoginPage = () => {
           </Button>
 
           <GoogleLogin
-            auto_select={true}
             onSuccess={async (credentials) => {
               try {
                 const googleUser: JwtPayload = jwtDecode(
