@@ -9,6 +9,7 @@ import { RegisterPage } from "./views/RegisterPage";
 import { AdminPrivateRoute } from "./routes/AdminRoute";
 import AdminPage from "./views/AdminPage";
 import PreviousOrdersPage from "./views/PreviousOrdersPage";
+import { Chat } from "./views/Chat";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/products" element={<Home />} />
             <Route path="/cart" element={<CartPage />}></Route>
             <Route path="/orders" element={<PreviousOrdersPage />}></Route>
+            <Route path="/chat" element={<Chat />}></Route>
           </Route>
           <Route element={<AdminPrivateRoute />}>
             <Route path="/admin" element={<AdminPage />}></Route>

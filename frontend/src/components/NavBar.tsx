@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/useAuth";
 import { authLevels, colorPalette } from "../utils/consts";
 import { paths } from "../routes/paths";
@@ -8,6 +8,7 @@ import { paths } from "../routes/paths";
 const NavBar: React.FC = () => {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -34,6 +35,9 @@ const NavBar: React.FC = () => {
               component={RouterLink}
               to={path.to}
               key={path.to}
+              style={{
+                textDecoration: path.to === pathname ? "underline" : "inherit",
+              }}
             >
               {path.name}
             </Button>

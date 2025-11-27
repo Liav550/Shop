@@ -21,4 +21,9 @@ export const paths: Path[] = [
     role: "user",
     name: "My Orders",
   },
+  {
+    to: "/chat",
+    role: "user",
+    name: "Chat",
+  },
 ];
