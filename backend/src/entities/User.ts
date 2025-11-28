@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./Order";
+import { Message } from "./Message";
 
 @Entity("users")
 export class User {
@@ -23,4 +24,10 @@ export class User {
 
   @OneToMany(() => Order, (order: Order) => order.user)
   orders: Order[];
+
+  @OneToMany(() => Message, (message: Message) => message.fromUser)
+  messagesSent: Message[];
+
+  @OneToMany(() => Message, (message: Message) => message.toUser)
+  messagesRecieved: Message[];
 }

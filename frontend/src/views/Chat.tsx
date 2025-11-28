@@ -1,11 +1,19 @@
 import { Box, TextField, IconButton } from "@mui/material";
-import { Message, type MessageProps } from "../components/chat/Message";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { LuSendHorizontal } from "react-icons/lu";
 import { colorPalette } from "../utils/consts";
+import { useGetRequest } from "../hooks/useGetRequest";
+import { useAuth } from "../contexts/useAuth";
+import type { Message as MessageType } from "../utils/types";
+import { Message } from "../components/chat/Message";
 
 const Chat = () => {
-  const [messages, setMessages] = useState<MessageProps[]>([]);
+  const { user, token } = useAuth();
+  const { data: messages } = useGetRequest<MessageType[]>(
+    `messages/${user?.id}`,
+    !!token,
+    token ? token : undefined
+  );
   const [input, setInput] = useState("");
   const chatRef = useRef<Element>(null);
 
@@ -13,20 +21,20 @@ const Chat = () => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }, [messages]);
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  }, []);
 
-    const now = new Date().toLocaleString("he-IL", {
+  const extractTime = (time: string) => {
+    return new Date(time).toLocaleString("he-IL", {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
 
-    setMessages((prev) => [
-      ...prev,
-      { content: input.trim(), time: now, isMe: true },
-    ]);
+  const handleSend = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (input.trim() === "") return;
+
     setInput("");
   };
 
@@ -42,13 +50,15 @@ const Chat = () => {
       overflow={"auto"}
       ref={chatRef}
     >
-      {messages.map((message) => (
-        <Message
-          content={message.content}
-          time={message.time}
-          key={message.content}
-        ></Message>
-      ))}
+      {messages &&
+        messages.map((message) => (
+          <Message
+            content={message.content}
+            time={extractTime(message.sentAt)}
+            key={message.id}
+            isMe={message.from === user?.id}
+          ></Message>
+        ))}
       <Box component={"form"} marginTop={"auto"} onSubmit={handleSend}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <TextField

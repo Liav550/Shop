@@ -56,6 +56,13 @@ type AdminOrder = {
   user: Pick<User, "email">;
 };
 
+type Message = {
+  id: number;
+  from: number;
+  to: number;
+  content: string;
+  sentAt: string;
+};
 export type {
   Product,
   User,
@@ -67,4 +74,5 @@ export type {
   Path,
   AdminOrder,
   OrderStatus,
+  Message,
 };
